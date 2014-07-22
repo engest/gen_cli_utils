@@ -1,0 +1,23 @@
+#!/bin/bash
+IFS=$(echo -en "\n\b")
+i=0
+for f in `ls -1 *.mp3`
+do
+   mkdir -p output/images/$i
+   cp $f output/$f
+   eyeD3 --write-images=output/images/$i $f
+   eyeD3 --remove-all output/$f
+   for l in `id3v2 -l $f | grep "^T" | sed -e 's/(.*://g' | sed 's/([0-9]*)//g' | sed -e 's/\ \ /:/g'`
+   do
+      id3_switch=`echo $l | sed -e 's/\(.*\):\(.*\)/\1/g'`
+      id3_arg=`echo $l | sed -e 's/\(.*\):\(.*\)/\2/g'`
+      id3v2 --$id3_switch $id3_arg output/$f
+   done
+   for j in `ls -1 output/images/$i/*`
+   do
+      bname=`basename --suffix=.jpeg $j`
+      eyeD3 --add-image=$j:$bname output/$f
+   done
+   i=`echo "$i + 1" | bc`
+done
+rm -rf output/images
