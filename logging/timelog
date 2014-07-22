@@ -1,0 +1,5 @@
+#!/bin/bash
+while read line ; do
+   printf -v dts "[%s %s %s %s:%s:%s.%03d %s]" $(date +"%a %b %d %H %M %S "; expr $(date +%N) / 1000000; date +%Y)
+   echo "$dts $line"
+done
