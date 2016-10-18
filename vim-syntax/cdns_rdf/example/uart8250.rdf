@@ -1,0 +1,330 @@
+// Copyright 2013 Cadence Design Systems, Inc.
+// All rights reserved worldwide.
+INCLUDE /home/engest/rdf.rdf
+REG BUF  {
+  desc = "Data value for UART reads/writes, shared with divisor latch" ;
+  access = RW;
+  preamble = RW;
+  postamble = RW;
+  regwidth = 8; 
+  reset = 0x0;
+}
+
+REG IER {
+  desc ="""Interrupt Enable Register""";
+  access = RW;
+  preamble = RW;
+  postamble = RW;
+  regwidth = 4 ; 
+  reset = 0x0;
+
+  field {
+     DESC ="""Interrupt Enable Modem Status Interrupt Enable""";
+  } MSI [3:3];
+
+  field {
+     DESC ="""Interrupt Enable Receive Line Status Interrupt Enable""";
+  } RLSI [2:2];
+
+  field {
+     DESC ="""Interrupt Enable Transmit holding register""";
+  } TBEI [1:1];
+
+  field {
+     DESC ="""Interrupt Enable Receive Character Ready""";
+  } RBFI [0:0];
+
+}
+
+REG IIR {
+  desc ="""Interrupt Identification Register""";
+  access = RW;
+  preamble = RO;
+  postamble = RO;
+  regwidth = 3; 
+  reset = 0x1;
+
+  field {
+     DESC ="""IIR Interrupt Identification of Source""";
+     value = {(0x0, modemStatusInt), (0x1,noInt), (0x2,transEmptyInt), (0x4,recDataReadyInt), (0x6,lineStatusInt)};
+  } INT [2:0];
+
+}
+
+REG LCR {
+  desc ="""Line Control Register""";
+  access = RW;
+  preamble = RW;
+  postamble = RW;
+  regwidth = 8; 
+  reset = 0x0;
+
+  field {
+     DESC ="""Select BUF-IER or DLH-DLL, Divisor Latch access bit""";
+     value = {(0x0,selectBUF), (0x1,selectDL)};
+  } DLA [7:7];
+
+  field {
+     DESC ="""Send Break""";
+  } SEND_BREAK [6:6];
+
+  field {
+     DESC ="""Parity Enable or Parity Bits ??""";
+     value = {(0x0,none), (0x1,odd), (0x2,unused), (0x3,even), (0x5,stickTrue), (0x7,stickFalse)};
+  } PEN [5:3];
+
+  field {
+     DESC ="""Stop Bits""";
+     value = {(0x0,oneStopBit), (0x1,twoStopBits)};
+  } STB [2:2];
+
+  field {
+     DESC ="""Word Length Bits""";
+     value = {(0x0,five), (0x1,six), (0x2,seven), (0x3,eight)};
+  } WLEN [1:0];
+
+}
+
+REG MCR {
+  desc ="""Modem Control Register""";
+  access = RW;
+  preamble = WO;
+  postamble = WO;
+  regwidth = 5; 
+  reset = 0x0;
+
+  field {
+     DESC ="""MCR Receiver Data Ready""";
+  } LOOP [4:4];
+
+  field {
+     DESC ="""MCR Auxilary Output 2""";
+  } OUT2 [3:3];
+
+  field {
+     DESC ="""MCR Auxilary Output 1""";
+  } OUT1 [2:2];
+
+  field {
+     DESC ="""MCR Force RTS""";
+  } RTS [1:1];
+
+  field {
+     DESC ="""MCR Force DTR""";
+  } DTR [0:0];
+
+}
+
+REG LSR {
+  desc ="""Line Status Register""";
+  access = RW;
+  preamble = RW;
+  postamble = RW;
+  regwidth = 7; 
+  reset = 0x60;
+
+  field {
+     DESC ="""LSR Transmitter serial register empty""";
+  } TEMT [6:6];
+
+  field {
+     DESC ="""LSR Transmitter holding register empty""";
+  } THRE [5:5];
+
+  field {
+     DESC ="""LSR Break Interrupt Indicator""";
+  } BI [4:4];
+
+  field {
+     DESC ="""LSR Frame Error Indicator""";
+  } FE [3:3];
+
+  field {
+     DESC ="""LSR Parity Error Indicator""";
+  } PE [2:2];
+
+  field {
+     DESC ="""LSR Overrun Error Indicator""";
+  } OE [1:1];
+
+  field {
+     DESC ="""LSR Receiver Data Ready""";
+  } DR [0:0];
+
+}
+
+REG MSR {
+  desc ="""Modem Status Register""";
+  access = RW;
+  preamble = RW;
+  postamble = RW;
+  regwidth = 8; 
+  reset = 0x0;
+
+  field {
+     DESC ="""Ring Carrier Detect""";
+  } DCD [7:7];
+
+  field {
+     DESC ="""Ring Indicator""";
+  } RI [6:6];
+
+  field {
+     DESC ="""Data Set Ready""";
+  } DTS [5:5];
+
+  field {
+     DESC ="""Clear to Send""";
+  } CTS [4:4];
+
+  field {
+     DESC ="""Delta DCD""";
+  } DDCD [3:3];
+
+  field {
+     DESC ="""Trailing edge ring indicator""";
+  } TERI [2:2];
+
+  field {
+     DESC ="""Delta DSR""";
+  } DDSR [1:1];
+
+  field {
+     DESC ="""Delta CTS""";
+  } DCTS [0:0];
+
+}
+
+REG SCR {
+  desc ="""Scratch Register - Unused""";
+  access = RW;
+  postamble = RW;
+  regwidth = 8; 
+  reset = 0x0;
+
+}
+
+REG USR {
+  desc ="""UART Status Register""";
+  access = RW;
+  postamble = RW;
+  regwidth = 8; 
+  reset = 0x0;
+
+}
+
+REG TFL {
+  desc ="""Transmit FIFO Level""";
+  access = RW;
+  postamble = RW;
+  regwidth = 8; 
+  reset = 0x0;
+
+}
+
+REG RFL {
+  desc ="""Receive FIFO Level""";
+  access = RW;
+  postamble = RW;
+  regwidth = 8; 
+  reset = 0x0;
+
+}
+
+REG HTX {
+  desc ="""Halt Tx""";
+  access = RW;
+  postamble = RW;
+  regwidth = 8; 
+  reset = 0x0;
+
+}
+
+REG CID {
+  desc ="""UART Configuration ID""";
+  access = RW;
+  postamble = RW;
+  regwidth = 8; 
+  reset = 0x0;
+
+}
+
+REG UCV {
+  desc ="""UART Component Version""";
+  access = RW;
+  postamble = RW;
+  regwidth = 8; 
+  reset = 0x0;
+
+}
+
+REG PID {
+  desc ="""Peripheral PID""";
+  access = RW;
+  postamble = RW;
+  regwidth = 8; 
+  reset = 0x0;
+
+}
+
+REG UCR {
+  desc ="""UARTB Configuration Register""";
+  access = RW;
+  postamble = RW;
+  regwidth = 8; 
+  reset = 0x0;
+
+}
+
+REG IRCR {
+  desc ="""UARTB IrDA Configuration Register""";
+  access = RW;
+  postamble = RW;
+  regwidth = 8; 
+  reset = 0x0;
+
+}
+
+REG UBABCSR {
+  desc ="""UBABCSR Auto Baud Detection Control and State Register""";
+  access = RW;
+  postamble = RW;
+  regwidth = 8; 
+  reset = 0x0;
+
+}
+
+REG UBABCNTR {
+  desc ="""UBABCNTR Auto Baud Detection Control and State""";
+  access = RW;
+  postamble = RW;
+  regwidth = 8; 
+  reset = 0x0;
+
+}
+
+register_bank uart8250_bank {
+  size = 0x120;
+  busportwidth = 32;
+  REG BUF  0x0;
+  REG IER  0x4;
+  REG IIR  0x8;
+  REG LCR  0xc;
+  REG MCR  0x10;
+  REG LSR  0x14;
+  REG MSR  0x18;
+  REG SCR  0x1c;
+  REG USR  0x7c;
+  REG TFL  0x80;
+  REG RFL  0x84;
+  REG HTX  0xa4;
+  RESERVED 0xb4;
+  REG CID  0xf4;
+  REG UCV  0xf8;
+  REG PID  0xfc;
+  REG UCR  0x100;
+  REG IRCR  0x108;
+  REG UBABCSR  0x110;
+  REG UBABCNTR  0x114;
+}
+
